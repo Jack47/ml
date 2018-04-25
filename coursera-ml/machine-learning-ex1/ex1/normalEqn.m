@@ -11,7 +11,8 @@ theta = zeros(size(X, 2), 1);
 %
 
 % ---------------------- Sample Solution ----------------------
-
+                           XT = X';
+                           theta = pinv(XT*X)*XT*y;
 
 
 
