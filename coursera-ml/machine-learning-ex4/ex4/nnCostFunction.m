@@ -92,25 +92,25 @@ J = -1/m * sums + regularized;
 
 % Theta1 25x401
 % Theta2 10x26
-
-% exclude bais unit?
+% So Delta* is the same dimension with coordinating Theta
 Delta1 = zeros(hidden_layer_size, input_layer_size+1); % [25, 401]
 Delta2 = zeros(num_labels, hidden_layer_size+1); % [10, 26]
 
 for t = 1:m,
   % compute for t-th example
-  a1 = [1 X(t, :)];
+  % add bais unit
+  a1 = [1 X(t, :)]; % 1x401
   z2 = a1*Theta1'; % [1 25]
-  a2 = [1 sigmoid(z2)]; % [ 1 25]
-  z3 = a2*Theta2'; % [ 1 10]
+  % add bais unit
+  a2 = [1 sigmoid(z2)]; % [1 26]
+  z3 = a2*Theta2'; % [1 10]
   a3 = sigmoid(z3); % [1 10]
-  % compute theta3
+  % compute delta3
   yt = zeros(1, num_labels); % [1, 10]
-  yt(y(t)) = 1;
+  yt(y(t)) = 1; % only column t is 1
 
   delta3 = a3-yt; % [1 10]
-  % size(delta3*Theta2)
-  % size(z2)
+  % z2 is  [1 25], so delta3*Theta2 should be [1 25]
   delta2 = delta3*Theta2(:, 2:end).*sigmoidGradient(z2); % [1 25]
 
   Delta2 = Delta2 + delta3'*a2; % [10, 26]
